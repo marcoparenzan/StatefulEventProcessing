@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <table id="messages" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>t</th>
+                    <th>from</th>
+                    <th>message</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts 
+{
+    <script src="~/lib/signalr/browser/signalr.js"></script>
+    <script type="text/javascript">
+
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl('/h0')
+            .build();
+
+        connection.start()
+            .then(function (xxx) {
+            })
+            .catch(function (error) {
+                console.error(error.message);
+            });
+
+        var tbody = $("#messages tbody");
+
+        connection.on('update', function (message, from) {
+            tbody.prepend("<tr><td>" + (Date.now().toString()) + "</td><td>" + from + "</td><td>" + message + "</td></tr>");
+        });
+    </script>
+}
